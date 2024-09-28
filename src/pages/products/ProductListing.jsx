@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import axiosClient from "../../../axios-client";
+import { useStateContext } from "../../contexts/NavigationContext";
 import { tableHeaderStyles } from "../../utils/dataArrays";
 import { ChangeIcon, DeleteIcon, EditNewIcon } from "../../utils/icons";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 export const ProductListing = ({ id, title }) => {
+  const { user } = useStateContext();
+  const userId = user.id;
+  const userRole = user.role;
+
+  console.log("userId: " , user)
   const [productList, setProductList] = useState([]);
   const [productListTableLoading, setProductListTableLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -251,42 +257,48 @@ export const ProductListing = ({ id, title }) => {
       wrap: false,
       minWidth: "200px",
     },
-    {
-      name: "Action",
-      cell: (row) => (
-        <div>
-          <button
-            className="edit-btn me-4"
-            onClick={() => handleEditProductList(row)}
-            title="Edit List"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-          >
-            <EditNewIcon />
-          </button>
-          <button
-            className="edit-btn me-4"
-            onClick={() => handleStatusChange(row)}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Change Status"
-          >
-            <ChangeIcon />
-          </button>
-          <button
-            className="edit-btn"
-            onClick={() => handleDelete(row)}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Delete List"
-          >
-            <DeleteIcon />
-          </button>
-        </div>
-      ),
-      minWidth: "50px",
-    },
+    // Conditionally render the "Action" column based on userRole
+    ...(userRole !== "3"
+      ? [
+          {
+            name: "Action",
+            cell: (row) => (
+              <div>
+                <button
+                  className="edit-btn me-4"
+                  onClick={() => handleEditProductList(row)}
+                  title="Edit List"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                >
+                  <EditNewIcon />
+                </button>
+                <button
+                  className="edit-btn me-4"
+                  onClick={() => handleStatusChange(row)}
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Change Status"
+                >
+                  <ChangeIcon />
+                </button>
+                <button
+                  className="edit-btn"
+                  onClick={() => handleDelete(row)}
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Delete List"
+                >
+                  <DeleteIcon />
+                </button>
+              </div>
+            ),
+            minWidth: "50px",
+          },
+        ]
+      : []),
   ];
+  
 
   return (
     <div
@@ -311,107 +323,111 @@ export const ProductListing = ({ id, title }) => {
           </div>
           <div className="modal-body theme-text-color">
             <div className=""></div>
-            <div className="row">
-              <div className="col-12 col-md-6">
-                <div class="form-group">
-                  <div className="modal-label">Name</div>
-                  {editProductList.id !== "0" ? (
-                    <input
-                      name="Name"
-                      type="text"
-                      class="form-control my-2 modal-label"
-                      value={editProductList.Name}
-                      onChange={(e) =>
-                        setEditProductList({
-                          ...editProductList,
-                          Name: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <input
-                      value={addProductList.Name}
-                      name="Name"
-                      type="text"
-                      class="form-control my-2 modal-label"
-                      onChange={(e) =>
-                        setAddProductList({
-                          ...addProductList,
-                          Name: e.target.value,
-                        })
-                      }
-                    />
-                  )}
-                  {errors.Name && (
-                    <div className=" error-text">{errors.Name}</div>
-                  )}
-                </div>
-              </div>
-              <div className="col-12 col-md-6">
-                <div class="form-group">
-                  <div className="modal-label">Description</div>
-                  {editProductList.id !== "0" ? (
-                    <input
-                      name="Description"
-                      type="text"
-                      class="form-control my-2 modal-label"
-                      value={editProductList.Description}
-                      onChange={(e) =>
-                        setEditProductList({
-                          ...editProductList,
-                          Description: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <input
-                      value={addProductList.Description}
-                      name="Description"
-                      type="text"
-                      class="form-control my-2 modal-label"
-                      onChange={(e) =>
-                        setAddProductList({
-                          ...addProductList,
-                          Description: e.target.value,
-                        })
-                      }
-                    />
-                  )}
-                  {errors.Description && (
-                    <div className=" error-text">{errors.Description}</div>
-                  )}
-                </div>
-              </div>
-            </div>
+            {userRole !== "3" && (
+  <>
+    <div className="row">
+      <div className="col-12 col-md-6">
+        <div className="form-group">
+          <div className="modal-label">Name</div>
+          {editProductList.id !== "0" ? (
+            <input
+              name="Name"
+              type="text"
+              className="form-control my-2 modal-label"
+              value={editProductList.Name}
+              onChange={(e) =>
+                setEditProductList({
+                  ...editProductList,
+                  Name: e.target.value,
+                })
+              }
+            />
+          ) : (
+            <input
+              value={addProductList.Name}
+              name="Name"
+              type="text"
+              className="form-control my-2 modal-label"
+              onChange={(e) =>
+                setAddProductList({
+                  ...addProductList,
+                  Name: e.target.value,
+                })
+              }
+            />
+          )}
+          {errors.Name && <div className="error-text">{errors.Name}</div>}
+        </div>
+      </div>
 
-            <div className="mt-4">
-              {editProductList.id !== "0" ? (
-                <div className="d-flex justify-content-end">
-                  <button
-                    onClick={() => handleCancelEditProductList()}
-                    className="btn btn-danger me-2 form-btn-text"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => handleEdit()}
-                    className="btn btn-primary form-btn-text"
-                  >
-                    Update
-                  </button>
-                </div>
-              ) : (
-                <div className="d-flex justify-content-end">
-                  <button
-                    type="submit"
-                    onClick={() => handleSave()}
-                    className="btn btn-primary form-btn-text"
-                  >
-                    Add List
-                  </button>
-                </div>
-              )}
-            </div>
+      <div className="col-12 col-md-6">
+        <div className="form-group">
+          <div className="modal-label">Description</div>
+          {editProductList.id !== "0" ? (
+            <input
+              name="Description"
+              type="text"
+              className="form-control my-2 modal-label"
+              value={editProductList.Description}
+              onChange={(e) =>
+                setEditProductList({
+                  ...editProductList,
+                  Description: e.target.value,
+                })
+              }
+            />
+          ) : (
+            <input
+              value={addProductList.Description}
+              name="Description"
+              type="text"
+              className="form-control my-2 modal-label"
+              onChange={(e) =>
+                setAddProductList({
+                  ...addProductList,
+                  Description: e.target.value,
+                })
+              }
+            />
+          )}
+          {errors.Description && (
+            <div className="error-text">{errors.Description}</div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div className="mt-4">
+      {editProductList.id !== "0" ? (
+        <div className="d-flex justify-content-end">
+          <button
+            onClick={() => handleCancelEditProductList()}
+            className="btn btn-danger me-2 form-btn-text"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => handleEdit()}
+            className="btn btn-primary form-btn-text"
+          >
+            Update
+          </button>
+        </div>
+      ) : (
+        <div className="d-flex justify-content-end">
+          <button
+            type="submit"
+            onClick={() => handleSave()}
+            className="btn btn-primary form-btn-text"
+          >
+            Add List
+          </button>
+        </div>
+      )}
+    </div>
+  </>
+)}
+
 
             <div>
               <DataTable
