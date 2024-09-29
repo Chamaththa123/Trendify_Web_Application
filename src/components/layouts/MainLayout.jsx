@@ -78,18 +78,22 @@ export const MainLayout = () => {
       mainPath = "Users";
       subPaths = ["Back", "Vendor", "CSR"];
       break;
-      case "/profile":
-        mainPath = "Account";
-        subPaths = ["Back"];
-        break;
-        case "/customers/approved":
-          mainPath = "Customers";
-          subPaths = ["Back","Approved Customers","Pending Customers"];
-          break;
-          case "/customers/pending":
-          mainPath = "Customers";
-          subPaths = ["Back","Approved Customers","Pending Customers"];
-          break;
+    case "/profile":
+      mainPath = "Account";
+      subPaths = ["Back"];
+      break;
+    case "/customers/approved":
+      mainPath = "Customers";
+      subPaths = ["Back", "Approved Customers", "Pending Customers"];
+      break;
+    case "/customers/pending":
+      mainPath = "Customers";
+      subPaths = ["Back", "Approved Customers", "Pending Customers"];
+      break;
+    case "/notifications":
+      mainPath = "Notifications";
+      subPaths = ["Back"];
+      break;
     default:
       break;
   }
@@ -117,14 +121,18 @@ export const MainLayout = () => {
             <div className="main-path">{mainPath}</div>
             <div className=" me-3">
               <div className="d-flex">
-                <div className="my-3 me-5"><NotificationIcon/></div>
-                <Link to='/profile'>
-                <img
-                  src={userIcon}
-                  alt="Logo"
-                  style={{ width: "50px", height: "50px",cursor: "pointer" }}
-                  className="my-2 me-3"
-                />
+                <div className="my-3 me-5">
+                  <Link to="/notifications">
+                    <NotificationIcon />
+                  </Link>
+                </div>
+                <Link to="/profile">
+                  <img
+                    src={userIcon}
+                    alt="Logo"
+                    style={{ width: "50px", height: "50px", cursor: "pointer" }}
+                    className="my-2 me-3"
+                  />
                 </Link>
               </div>
             </div>
