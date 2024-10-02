@@ -1,4 +1,4 @@
-import { CustomerIcon, DashboardIcon, EstateIcon, ProductIcon, SupplierIcon, UserIcon } from "./icons";
+import { CustomerIcon, DashboardIcon, EstateIcon, OrderIcon, ProductIcon, SupplierIcon, UserIcon } from "./icons";
 
 export const newNavigationItems = [
   {
@@ -32,6 +32,7 @@ export const userSidebarItems = [
   { title: "Customers", link: "/customers/approved", icon: CustomerIcon }, 
   { title: "Products", link: "/products", icon: ProductIcon }, 
   { title: "Users", link: "/users/vendors", icon: UserIcon },
+  { title: "Orders", link: "/orders", icon: OrderIcon },
 ];
 
 export const subPathLinks = {
