@@ -18,6 +18,7 @@ export const SideBar = ({
   const isUsersSectionActive = location.pathname.startsWith('/users');
   const isProductSectionActive = location.pathname.startsWith('/products');
   const isCustomerSectionActive = location.pathname.startsWith('/customers');
+  const isOrderSectionActive = location.pathname.startsWith('/orders');
 
   return (
     <div>
@@ -30,7 +31,8 @@ export const SideBar = ({
           const isActive = location.pathname === item.link || 
             (item.link === "/users/vendors" && isUsersSectionActive) || 
             (item.link.startsWith('/products') && isProductSectionActive)|| 
-            (item.link.startsWith('/customers') && isCustomerSectionActive);
+            (item.link.startsWith('/customers') && isCustomerSectionActive) || 
+            (item.link.startsWith('/orders') && isOrderSectionActive);
 
           const NavIcon = item.icon;
           return (

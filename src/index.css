@@ -198,14 +198,26 @@ div.content {
 }
 
 .status-pending-btn{
-  background-color: #ffd79a;
-  color: #e68e06;
+  background-color: #ffe7c2;
+  color: #ff9d0b;
   padding: 0px 5px 0px 5px;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 600;
   border: none;
   width: 60px;
+  text-align: center;
+}
+
+.status-processing-btn{
+  background-color: #d1d9ff;
+  color: #152ae4;
+  padding: 0px 5px 0px 5px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  width: 60px;
+  border: none;
   text-align: center;
 }
 
