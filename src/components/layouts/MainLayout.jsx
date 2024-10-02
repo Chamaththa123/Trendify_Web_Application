@@ -96,7 +96,7 @@ export const MainLayout = () => {
       break;
     case "/orders":
       mainPath = "Orders";
-      subPaths = ["Back", "New Orders", "Complete Orders", "Incomplete Orders"];
+      subPaths = ["Back", "New Orders", "Complete Orders", "Incomplete Orders","Cancelation Requests"];
       break;
     case `/orders/view/${id}`:
       mainPath = "Orders";

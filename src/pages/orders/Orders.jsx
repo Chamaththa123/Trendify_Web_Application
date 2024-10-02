@@ -59,7 +59,7 @@ export const Orders = () => {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',
-            hour12: true, // For 12-hour format with AM/PM, or set to false for 24-hour format
+            hour12: true,
           })}`;
         },
         wrap: true,
@@ -72,7 +72,7 @@ export const Orders = () => {
       },      
         {
           name: "Customer",
-          selector: (row) => row.description,
+          selector: (row) => `${row.customerFirstName} ${row.customerLastName}`,
           wrap: true,
           compact: true,
           maxWidth: "auto",
@@ -91,10 +91,11 @@ export const Orders = () => {
               whiteSpace: "normal",
               wordBreak: "break-word",
             },
+            center:true
           },
           {
             name: "Total (Rs)",
-            selector: (row) => row.totalPrice,
+            selector: (row) => parseFloat(row.totalPrice).toFixed(2),
             wrap: true,
             compact: true,
             maxWidth: "auto",
@@ -102,17 +103,21 @@ export const Orders = () => {
               whiteSpace: "normal",
               wordBreak: "break-word",
             },
+            right:true
           },
         {
           name: "Status",
           selector: (row) =>
             row.status === 0 ? (
-              <div className="status-pending-btn">Pending</div>
+              <div className="status-pending-btn" style={{width:'80px'}}>Pending</div>
             ) : row.status === 1 ? (
-              <div className="status-active-btn">Complete</div>
-            ) : null,
+              <div className="status-processing-btn" style={{width:'80px'}}>Processing</div>
+            ) : row.status === 2 ? (
+              <div className="status-active-btn" style={{width:'80px'}}>Complete</div>
+            ): null,
           wrap: false,
           minWidth: "200px",
+          center:true
         },
         {
           name: "Action",

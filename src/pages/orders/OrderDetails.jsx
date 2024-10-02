@@ -3,16 +3,19 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../../../axios-client";
 import DataTable from "react-data-table-component";
 import { tableHeaderStyles } from "../../utils/dataArrays";
+import { ChangeIcon, DeliveredIcon, NoAccessIcon } from "../../utils/icons";
+import Swal from "sweetalert2";
+import { useStateContext } from "../../contexts/NavigationContext";
 
 export const OrderDetails = () => {
-  const { id } = useParams(); // Destructure id from useParams (corrected from idOrder)
+  const { id } = useParams();
+  const { user } = useStateContext();
+    const userId = user.id;
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  console.log("order id", id); // Logging the correct id
+  const [tableLoading, setTableLoading] = useState(false);
 
   useEffect(() => {
-    // Function to fetch order by ID
     const fetchOrderById = async () => {
       try {
         const response = await axiosClient.get(`/Orders/${id}`);
@@ -45,88 +48,148 @@ export const OrderDetails = () => {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: true, // For 12-hour format with AM/PM
+      hour12: true,
+    });
+  };
+
+  const handleIsDeliveredChange = (orderItem) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to mark this product as delivered?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, mark as delivered!",
+      cancelButtonText: "No, cancel",
+      cancelButtonColor: "#d33",
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTableLoading(true);
+        axiosClient
+          .patch(
+            `Orders/${id}/vendor/${orderItem.vendorId}/product/${orderItem.productId}/deliver`
+          )
+          .then((response) => {
+            axiosClient.get(`/Orders/${id}`).then((res) => {
+              setOrder(res.data);
+              setTableLoading(false);
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: `Order product marked as delivered!`,
+              });
+            });
+          })
+          .catch((error) => {
+            console.error("Error updating product status:", error);
+            setTableLoading(false);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong while updating the product status.",
+            });
+          });
+      }
     });
   };
 
   const TABLE_ORDER_ITEM = [
-      {
-        name: "Product",
-        selector: (row) => row.productId,
-        wrap: true,
-        compact: true,
-        maxWidth: "auto",
-        cellStyle: {
-          whiteSpace: "normal",
-          wordBreak: "break-word",
-        },
+    {
+      name: "Product",
+      selector: (row) => row.productName,
+      wrap: true,
+      compact: true,
+      maxWidth: "auto",
+      cellStyle: {
+        whiteSpace: "normal",
+        wordBreak: "break-word",
       },
-        {
-          name: "Unit Price (Rs)",
-          selector: (row) => row.unitPrice.toFixed(2),
-          wrap: true,
-          compact: true,
-          maxWidth: "auto",
-          cellStyle: {
-            whiteSpace: "normal",
-            wordBreak: "break-word",
-          },
-          right:true
-        },
-        {
-          name: "Quantity",
-          selector: (row) => row.quantity,
-          wrap: true,
-          compact: true,
-          maxWidth: "auto",
-          cellStyle: {
-            whiteSpace: "normal",
-            wordBreak: "break-word",
-          },
-          right:true
-        },
-        {
-            name: "Total (Rs)",
-            selector: (row) => row.total.toFixed(2),
-            wrap: true,
-            compact: true,
-            maxWidth: "auto",
-            cellStyle: {
-              whiteSpace: "normal",
-              wordBreak: "break-word",
-            },
-            right:true
-          },
-      {
-        name: "Is Delivered?",
-        selector: (row) =>
-          row.isDelivered === false ? (
-            <div className="status-pending-btn">No</div>
-          ) : row.isDelivered === true ? (
-            <div className="status-active-btn">Yes</div>
-          ) : null,
-        wrap: false,
-        minWidth: "auto",
-        center:true
-      },
-      {
+    },
+    {
+      name: "Unit Price (Rs)",
+      selector: (row) => row.unitPrice.toFixed(2),
+      wrap: true,
+      compact: true,
+      maxWidth: "auto",
+      right: true,
+    },
+    {
+      name: "Quantity",
+      selector: (row) => row.quantity,
+      wrap: true,
+      compact: true,
+      maxWidth: "auto",
+      right: true,
+    },
+    {
+      name: "Total (Rs)",
+      selector: (row) => row.total.toFixed(2),
+      wrap: true,
+      compact: true,
+      maxWidth: "auto",
+      right: true,
+    },
+    {
+      name: "Is Delivered?",
+      selector: (row) =>
+        row.isDelivered === false ? (
+          <div className="status-pending-btn">No</div>
+        ) : row.isDelivered === true ? (
+          <div className="status-active-btn">Yes</div>
+        ) : null,
+      wrap: false,
+      minWidth: "auto",
+      center: true,
+    },
+    {
         name: "Action",
         cell: (row) => (
           <div>
-            {/* <button
-              className="edit-btn me-4"
-            //   onClick={() => handleViewClick(row)}
-              title="Edit List"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-            >
-              <ViewIcon />
-            </button> */}
+            {userId === row.vendorId ? (
+              order.isCancellationRequested && !order.isCancellationApproved ? (
+                <div className="text-danger">Awaiting Approval</div>
+              ) : row.isDelivered ? (
+                <button
+                className="edit-btn me-4"
+                disabled
+              >
+                <DeliveredIcon />
+              </button>
+              ) : (
+                <button
+                  className="edit-btn me-4"
+                  onClick={() => handleIsDeliveredChange(row)}
+                  title="Mark as Delivered"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                >
+                  <ChangeIcon />
+                </button>
+              )
+            ) : (
+              <button
+                className="edit-btn me-4"
+                disabled
+              >
+                <NoAccessIcon />
+              </button>
+            )}
           </div>
         ),
         minWidth: "50px",
+      }
+      
+  ];
+
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.vendorId === userId,
+      style: {
+        color: "#ff9d0b",
+      fontWeight: 700,
       },
-    ];
+    },
+  ];
 
   return (
     <section>
@@ -146,7 +209,7 @@ export const OrderDetails = () => {
           <div className="col-6 d-flex justify-content-left">
             <div className="row">
               <div style={{ width: "200px" }}>Customer</div>
-              <div style={{ width: "auto" }}>{order.customerId} </div>
+              <div style={{ width: "auto" }}>{order.customerFirstName} {order.customerLastName} </div>
             </div>
           </div>
         </div>
@@ -155,10 +218,10 @@ export const OrderDetails = () => {
           <div className="col-6 d-flex justify-content-left">
             <div className="row">
               <div className=" text-nowrap" style={{ width: "200px" }}>
-                Recipient
+                Recipient Name
               </div>
               <div className="text-nowrap" style={{ width: "auto" }}>
-                K.J.S.Rajapaksha{" "}
+              {order.recipient_Name}
               </div>
             </div>
           </div>
@@ -168,7 +231,7 @@ export const OrderDetails = () => {
                 Recipient Email
               </div>
               <div className="col-6 text-nowrap" style={{ width: "auto" }}>
-                shmodchamaththa@gmail.com{" "}
+              {order.recipient_Email}
               </div>
             </div>
           </div>
@@ -181,7 +244,7 @@ export const OrderDetails = () => {
                 Recipient Contact No
               </div>
               <div className="text-nowrap" style={{ width: "auto" }}>
-                0703835678{" "}
+              {order.recipient_Contact}
               </div>
             </div>
           </div>
@@ -191,7 +254,7 @@ export const OrderDetails = () => {
                 Recipient Address
               </div>
               <div className="col-6 text-nowrap" style={{ width: "auto" }}>
-                Kaduwela, korathota
+              {order.recipient_Address}
               </div>
             </div>
           </div>
@@ -216,7 +279,9 @@ export const OrderDetails = () => {
               <div className="col-6 text-nowrap" style={{ width: "auto" }}>
                 {order.status === 0 ? (
                   <div className="status-pending-btn">Pending</div>
-                ) : order.status === 1 ? (
+                ) : order.status === 1 ?  (
+                    <div className="status-processing-btn" style={{width:'80px'}}>Processing</div>
+                  ): order.status === 2 ?(
                   <div className="status-active-btn">Complete</div>
                 ) : null}{" "}
               </div>
@@ -260,23 +325,26 @@ export const OrderDetails = () => {
         </div>
 
         <div className="container mt-3">
-      <DataTable
-        columns={TABLE_ORDER_ITEM}
-        responsive
-        data={order.orderItems}
-        customStyles={tableHeaderStyles}
-        className="mt-4"
-        pagination
-        paginationPerPage={5}
-        paginationRowsPerPageOptions={[5, 10, 15]}
-        paginationComponentOptions={{
-          rowsPerPageText: "Entries per page:",
-          rangeSeparatorText: "of",
-        }}
-        noDataComponent={<div className="text-center">No data available</div>}
-      />
-    </div>
-
+          <DataTable
+            columns={TABLE_ORDER_ITEM}
+            responsive
+            data={order.orderItems}
+            customStyles={tableHeaderStyles}
+            className="mt-4"
+            pagination
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15]}
+            paginationComponentOptions={{
+              rowsPerPageText: "Entries per page:",
+              rangeSeparatorText: "of",
+            }}
+            progressPending={tableLoading}
+            noDataComponent={
+              <div className="text-center">No data available</div>
+            }
+            conditionalRowStyles={conditionalRowStyles}
+          />
+        </div>
       </div>
     </section>
   );
