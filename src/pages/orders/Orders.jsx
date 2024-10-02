@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import axiosClient from "../../../axios-client";
 import Select from "react-select";
+import { Link, useNavigate } from "react-router-dom";
 import { tableHeaderStyles, customSelectStyles } from "../../utils/dataArrays";
 import {
   AddIcon,
@@ -15,7 +16,6 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import { ChangeIcon, DeleteIcon, EditNewIcon } from "../../utils/icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
 
 export const Orders = () => {
     const { user } = useStateContext();
@@ -41,6 +41,10 @@ export const Orders = () => {
       fetchOrders();
     }, [orderTableLoading,userId]);
 
+
+    const handleViewClick = (order) => {
+      navigate(`/orders/view/${order.id}`);
+    };
 
     const TABLE_PRODUCT_LIST = [
       {
@@ -102,10 +106,10 @@ export const Orders = () => {
         {
           name: "Status",
           selector: (row) =>
-            row.isActive === false ? (
-              <div className="status-inactive-btn">Inactive</div>
-            ) : row.isActive === true ? (
-              <div className="status-active-btn">Active</div>
+            row.status === 0 ? (
+              <div className="status-pending-btn">Pending</div>
+            ) : row.status === 1 ? (
+              <div className="status-active-btn">Complete</div>
             ) : null,
           wrap: false,
           minWidth: "200px",
@@ -116,7 +120,7 @@ export const Orders = () => {
             <div>
               <button
                 className="edit-btn me-4"
-                onClick={() => handleEditProductList(row)}
+                onClick={() => handleViewClick(row)}
                 title="Edit List"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"

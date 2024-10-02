@@ -13,6 +13,7 @@ import { Customer } from "../pages/customers/Customer";
 import { PendingCustomer } from "../pages/customers/PendingCustomer";
 import Notifications from "../pages/notifications/Notifications";
 import { Orders } from "../pages/orders/Orders";
+import { OrderDetails } from "../pages/orders/OrderDetails";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute roles={["1", "3"]}>
             <Orders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/orders/view/:id",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <OrderDetails />
           </ProtectedRoute>
         ),
       },
