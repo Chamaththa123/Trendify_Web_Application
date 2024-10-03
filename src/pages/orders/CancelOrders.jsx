@@ -7,7 +7,7 @@ import { ViewIcon } from "../../utils/icons";
 import { useStateContext } from "../../contexts/NavigationContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export const Orders = () => {
+export const CancelOrders = () => {
   const { user } = useStateContext();
   const userId = user.id;
 
@@ -25,7 +25,9 @@ export const Orders = () => {
       try {
         const response = await axiosClient.get(`/Orders/vendor/${userId}`);
         const filteredOrders = response.data.filter(
-          (order) => order.status === 0
+          (order) =>
+            order.isCancellationRequested === true &&
+            order.isCancellationApproved === 0
         );
         setOrders(filteredOrders);
       } catch (error) {
