@@ -4,6 +4,7 @@ import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../contexts/NavigationContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import hero from "../../assets/images/signIn.png";
+import logo from "../../assets/images/1.1.png";
 
 const SignIn = () => {
     const { setUser, setToken } = useStateContext();
@@ -70,9 +71,10 @@ const SignIn = () => {
 
         <div className="col-md-6 d-flex align-items-center justify-content-center text-white theme-bg-color">
           <div className=" bg-white rounded-card col-md-9 p-4 theme-text-color">
-            <h2 className="text-center mb-5 mt-2">
+          <center><img src={logo} alt="Logo" style={{width:'300px',marginTop:'10px'}}/></center>
+            {/* <h2 className="text-center mb-5 mt-2">
               <strong>Welcome Back</strong>
-            </h2>
+            </h2> */}
             <form  onSubmit={handleLogin}>
               <div class="form-group my-3">
                 <label for="exampleInputEmail1" className="mb-2">Email address</label>

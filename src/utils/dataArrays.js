@@ -32,7 +32,7 @@ export const userSidebarItems = [
   { title: "Customers", link: "/customers/approved", icon: CustomerIcon }, 
   { title: "Products", link: "/products", icon: ProductIcon }, 
   { title: "Users", link: "/users/vendors", icon: UserIcon },
-  { title: "Orders", link: "/orders", icon: OrderIcon },
+  { title: "Orders", link: "/orders/new", icon: OrderIcon },
 ];
 
 export const subPathLinks = {
@@ -40,6 +40,11 @@ export const subPathLinks = {
   "CSR": "/users/csr",
   "Approved Customers": "/customers/approved",
   "Pending Customers": "/customers/pending",
+  "New Orders": "/orders/new",
+  "All Orders": "/orders/all",
+  "Incomplete Orders": "/orders/incomplete",
+  "Cancelation Requests": "/orders/cancel",
+  "Cancelation Accepted": "/orders/approved-cancelation",
 };
 
 export const tableHeaderStyles = {

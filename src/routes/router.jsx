@@ -14,6 +14,11 @@ import { PendingCustomer } from "../pages/customers/PendingCustomer";
 import Notifications from "../pages/notifications/Notifications";
 import { Orders } from "../pages/orders/Orders";
 import { OrderDetails } from "../pages/orders/OrderDetails";
+import { CompleteOrders } from "../pages/orders/CompleteOrders";
+import { IncompleteOrders } from "../pages/orders/IncompleteOrders";
+import { CancelOrders } from "../pages/orders/CancelOrders";
+import { AllOrders } from "../pages/orders/AllOrders";
+import { CancalationAcceptedOrders } from "../pages/orders/CancalationAcceptedOrders";
 
 const router = createBrowserRouter([
   {
@@ -93,7 +98,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/orders",
+        path: "/orders/new",
         element: (
           <ProtectedRoute roles={["1", "3"]}>
             <Orders />
@@ -105,6 +110,38 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute roles={["1", "3"]}>
             <OrderDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/orders/all",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <AllOrders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/orders/incomplete",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <IncompleteOrders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/orders/cancel",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <CancelOrders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/orders/approved-cancelation",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <CancalationAcceptedOrders />
           </ProtectedRoute>
         ),
       },

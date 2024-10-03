@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
-import { tableHeaderStyles } from "../../utils/dataArrays";
+import { customSelectStyles, tableHeaderStyles } from "../../utils/dataArrays";
 import { ViewIcon } from "../../utils/icons";
 import { useStateContext } from "../../contexts/NavigationContext";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Select from "react-select";
 
-export const Orders = () => {
+export const AllOrders = () => {
   const { user } = useStateContext();
   const userId = user.id;
 
@@ -15,19 +16,17 @@ export const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [orderTableLoading, setOrderTableLoading] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState("");
-  const [dateFilter, setDateFilter] = useState(""); // State for date filter
+  const [dateFilter, setDateFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState({ value: "", label: "All" });
 
-  const handleLoading = () => setSelectedOrderId((pre) => !pre);
+  const handleLoading = () => setSelectedOrderId((prev) => !prev);
 
   // Fetching orders from the backend
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axiosClient.get(`/Orders/vendor/${userId}`);
-        const filteredOrders = response.data.filter(
-          (order) => order.status === 0
-        );
-        setOrders(filteredOrders);
+        setOrders(response.data);
       } catch (error) {
         console.error("Failed to fetch orders", error);
       }
@@ -45,11 +44,23 @@ export const Orders = () => {
     setDateFilter(e.target.value);
   };
 
-  // Filter orders based on the selected date
+  // Function to handle status filtering
+  const handleStatusFilterChange = (selectedOption) => {
+    setStatusFilter(selectedOption);
+  };
+
+  // Filter orders based on the selected date and status
   const filteredOrders = orders.filter((order) => {
-    if (!dateFilter) return true;
     const orderDate = new Date(order.date).toISOString().split("T")[0];
-    return orderDate === dateFilter;
+
+    const matchesDate = !dateFilter || orderDate === dateFilter;
+
+    const matchesStatus =
+      statusFilter === null ||
+      statusFilter.value === "" ||
+      order.status === statusFilter.value;
+
+    return matchesDate && matchesStatus;
   });
 
   const TABLE_PRODUCT_LIST = [
@@ -150,24 +161,48 @@ export const Orders = () => {
     },
   ];
 
+  const statusOptions = [
+    { value: "", label: "All" },
+    { value: 0, label: "Pending" },
+    { value: 1, label: "Processing" },
+    { value: 2, label: "Complete" },
+  ];
+
   return (
     <section>
       <div className="container bg-white rounded-card p-4 theme-text-color">
         <div className="row">
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center gap-3">
-              <h5 className="mb-4">New Orders</h5>
-              <div className="col-3">
-                <span style={{ fontSize: "15px", fontWeight: "600" }}>
-                  Search by Date
-                </span>
-                <input
-                  name="dateFilter"
-                  type="date"
-                  className="form-control"
-                  value={dateFilter}
-                  onChange={handleDateFilterChange}
-                />
+              <h5 className="mb-4">All Orders</h5>
+              <div className="col-5 d-flex justify-content-left gap-3">
+                <div className="col-7">
+                  <span style={{ fontSize: "15px", fontWeight: "600" }}>
+                    Search by Status
+                  </span>
+                  <Select
+                    classNamePrefix="select"
+                    options={statusOptions}
+                    onChange={handleStatusFilterChange}
+                    isSearchable={true}
+                    name="statusFilter"
+                    styles={customSelectStyles}
+                    className="col-9"
+                    value={statusFilter}
+                  />
+                </div>
+                <div className="col-5" style={{ marginLeft: "-20px" }}>
+                  <span style={{ fontSize: "15px", fontWeight: "600" }}>
+                    Search by Date
+                  </span>
+                  <input
+                    name="dateFilter"
+                    type="date"
+                    className="form-control"
+                    value={dateFilter}
+                    onChange={handleDateFilterChange}
+                  />
+                </div>
               </div>
             </div>
           </div>

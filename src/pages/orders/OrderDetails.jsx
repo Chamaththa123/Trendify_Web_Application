@@ -10,7 +10,7 @@ import { useStateContext } from "../../contexts/NavigationContext";
 export const OrderDetails = () => {
   const { id } = useParams();
   const { user } = useStateContext();
-    const userId = user.id;
+  const userId = user.id;
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tableLoading, setTableLoading] = useState(false);
@@ -142,43 +142,42 @@ export const OrderDetails = () => {
       center: true,
     },
     {
-        name: "Action",
-        cell: (row) => (
-          <div>
-            {userId === row.vendorId ? (
-              order.isCancellationRequested && !order.isCancellationApproved ? (
-                <div className="text-danger">Awaiting Approval</div>
-              ) : row.isDelivered ? (
-                <button
-                className="edit-btn me-4"
-                disabled
-              >
+      name: "Action",
+      cell: (row) => (
+        <div>
+          {userId === row.vendorId ? (
+            order.isCancellationRequested &&
+            order.isCancellationApproved == 0 ? (
+              <div className="text-danger">Awaiting Approval</div>
+            ) : order.isCancellationRequested &&
+              order.isCancellationApproved == 2 ? (
+              <button className="edit-btn me-4" disabled>
+                <div className="text-danger">Cancel</div>
+              </button>
+            ) : row.isDelivered ? (
+              <button className="edit-btn me-4" disabled>
                 <DeliveredIcon />
               </button>
-              ) : (
-                <button
-                  className="edit-btn me-4"
-                  onClick={() => handleIsDeliveredChange(row)}
-                  title="Mark as Delivered"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                >
-                  <ChangeIcon />
-                </button>
-              )
             ) : (
               <button
                 className="edit-btn me-4"
-                disabled
+                onClick={() => handleIsDeliveredChange(row)}
+                title="Mark as Delivered"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
               >
-                <NoAccessIcon />
+                <ChangeIcon />
               </button>
-            )}
-          </div>
-        ),
-        minWidth: "50px",
-      }
-      
+            )
+          ) : (
+            <button className="edit-btn me-4" disabled>
+              <NoAccessIcon />
+            </button>
+          )}
+        </div>
+      ),
+      minWidth: "50px",
+    },
   ];
 
   const conditionalRowStyles = [
@@ -186,7 +185,7 @@ export const OrderDetails = () => {
       when: (row) => row.vendorId === userId,
       style: {
         color: "#ff9d0b",
-      fontWeight: 700,
+        fontWeight: 700,
       },
     },
   ];
@@ -209,7 +208,9 @@ export const OrderDetails = () => {
           <div className="col-6 d-flex justify-content-left">
             <div className="row">
               <div style={{ width: "200px" }}>Customer</div>
-              <div style={{ width: "auto" }}>{order.customerFirstName} {order.customerLastName} </div>
+              <div style={{ width: "auto" }}>
+                {order.customerFirstName} {order.customerLastName}{" "}
+              </div>
             </div>
           </div>
         </div>
@@ -221,7 +222,7 @@ export const OrderDetails = () => {
                 Recipient Name
               </div>
               <div className="text-nowrap" style={{ width: "auto" }}>
-              {order.recipient_Name}
+                {order.recipient_Name}
               </div>
             </div>
           </div>
@@ -231,7 +232,7 @@ export const OrderDetails = () => {
                 Recipient Email
               </div>
               <div className="col-6 text-nowrap" style={{ width: "auto" }}>
-              {order.recipient_Email}
+                {order.recipient_Email}
               </div>
             </div>
           </div>
@@ -244,7 +245,7 @@ export const OrderDetails = () => {
                 Recipient Contact No
               </div>
               <div className="text-nowrap" style={{ width: "auto" }}>
-              {order.recipient_Contact}
+                {order.recipient_Contact}
               </div>
             </div>
           </div>
@@ -254,7 +255,7 @@ export const OrderDetails = () => {
                 Recipient Address
               </div>
               <div className="col-6 text-nowrap" style={{ width: "auto" }}>
-              {order.recipient_Address}
+                {order.recipient_Address}
               </div>
             </div>
           </div>
@@ -279,9 +280,14 @@ export const OrderDetails = () => {
               <div className="col-6 text-nowrap" style={{ width: "auto" }}>
                 {order.status === 0 ? (
                   <div className="status-pending-btn">Pending</div>
-                ) : order.status === 1 ?  (
-                    <div className="status-processing-btn" style={{width:'80px'}}>Processing</div>
-                  ): order.status === 2 ?(
+                ) : order.status === 1 ? (
+                  <div
+                    className="status-processing-btn"
+                    style={{ width: "80px" }}
+                  >
+                    Processing
+                  </div>
+                ) : order.status === 2 ? (
                   <div className="status-active-btn">Complete</div>
                 ) : null}{" "}
               </div>

@@ -1,7 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { adminSidebarItems, userSidebarItems } from "../../utils/dataArrays";
 import { useStateContext } from "../../contexts/NavigationContext";
-import logo from "../../assets/images/Logo.png";
+import logo from "../../assets/images/1.png";
+import { LogOutIcon } from "../../utils/icons";
 
 export const SideBar = ({
   handleSidebar,
@@ -24,7 +25,7 @@ export const SideBar = ({
     <div>
       <div className="sidebar">
         <div>
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" style={{width:'200px',marginTop:'-30px'}}/>
         </div>
 
         {sidebarItems.slice(0, 8).map((item, itemIndex) => {
@@ -47,6 +48,29 @@ export const SideBar = ({
             </a>
           );
         })}
+
+<button 
+          onClick={handleLogout}
+          style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '10px 20px',
+            backgroundColor: '#ecefff',
+            color: '#2a3577',
+            border: 'none',
+            borderRadius: '20px',
+            cursor: 'pointer',
+            width: '150px',
+            textAlign: 'center',
+            fontSize:'14px',
+            fontWeight:'bold'
+          }}
+        >
+          <LogOutIcon/>&nbsp;&nbsp;&nbsp;&nbsp;
+          Logout
+        </button>
       </div>
     </div>
   );
