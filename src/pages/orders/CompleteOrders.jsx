@@ -126,6 +126,14 @@ export const CompleteOrders = () => {
           <div className="status-active-btn" style={{ width: "80px" }}>
             Complete
           </div>
+        ) : row.status === 4 ? (
+          <div className="status-cancel-requested-btn" style={{ width: "80px" }}>
+            Cancel Requested
+          </div>
+        ) : row.status === 3 ? (
+          <div className="status-inactive-btn" style={{ width: "80px" }}>
+            Cancel
+          </div>
         ) : null,
       wrap: false,
       minWidth: "200px",
@@ -156,7 +164,7 @@ export const CompleteOrders = () => {
         <div className="row">
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center gap-3">
-              <h5 className="mb-4">New Orders</h5>
+              <h5 className="mb-4">Complete Orders</h5>
               <div className="col-3">
                 <span style={{ fontSize: "15px", fontWeight: "600" }}>
                   Search by Date

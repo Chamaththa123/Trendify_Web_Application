@@ -14,6 +14,7 @@ export const OrderDetails = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tableLoading, setTableLoading] = useState(false);
+  const [radioSelection, setRadioSelection] = useState(null);
 
   useEffect(() => {
     const fetchOrderById = async () => {
@@ -93,6 +94,80 @@ export const OrderDetails = () => {
     });
   };
 
+  const handleApproveRequest = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to approve this order cancellation request?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, approve it!",
+      cancelButtonText: "No, cancel",
+      cancelButtonColor: "#d33",
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosClient
+          .patch(`/Orders/${id}/approve-cancellation`)
+          .then((response) => {
+            setOrder((prev) => ({
+              ...prev,
+              isCancellationApproved: 1,
+            }));
+            Swal.fire({
+              icon: "success",
+              title: "Approved!",
+              text: "The cancellation request has been approved.",
+            });
+          })
+          .catch((error) => {
+            console.error("Error approving the cancellation request:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong while approving the request.",
+            });
+          });
+      }
+    });
+  };
+
+  const handleRejectRequest = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to reject this order cancellation request?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Reject it!",
+      cancelButtonText: "No, cancel",
+      cancelButtonColor: "#d33",
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosClient
+          .patch(`/Orders/${id}/reject-cancellation`)
+          .then((response) => {
+            setOrder((prev) => ({
+              ...prev,
+              isCancellationApproved: 2,
+            }));
+            Swal.fire({
+              icon: "success",
+              title: "Approved!",
+              text: "The cancellation request has been rejected.",
+            });
+          })
+          .catch((error) => {
+            console.error("Error rejecting the cancellation request:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong while rejecting the request.",
+            });
+          });
+      }
+    });
+  };
+
   const TABLE_ORDER_ITEM = [
     {
       name: "Product",
@@ -150,7 +225,7 @@ export const OrderDetails = () => {
             order.isCancellationApproved == 0 ? (
               <div className="text-danger">Awaiting Approval</div>
             ) : order.isCancellationRequested &&
-              order.isCancellationApproved == 2 ? (
+              order.isCancellationApproved == 1 ? (
               <button className="edit-btn me-4" disabled>
                 <div className="text-danger">Cancel</div>
               </button>
@@ -289,6 +364,10 @@ export const OrderDetails = () => {
                   </div>
                 ) : order.status === 2 ? (
                   <div className="status-active-btn">Complete</div>
+                ) : order.status === 4 ? (
+                  <div className="status-cancel-requested-btn">Cancel Requested</div>
+                ) : order.status === 3 ? (
+                  <div className="status-inactive-btn">Cancel</div>
                 ) : null}{" "}
               </div>
             </div>
@@ -318,7 +397,7 @@ export const OrderDetails = () => {
         </div>
 
         <div className="row form-btn-text mt-2">
-          <div className="col-12 d-flex justify-content-left">
+          <div className="col-6 d-flex justify-content-left">
             <div className="row">
               <div className=" text-nowrap" style={{ width: "200px" }}>
                 Cancelation Note
@@ -327,6 +406,29 @@ export const OrderDetails = () => {
                 {order.cancellationNote}{" "}
               </div>
             </div>
+          </div>
+          <div className="col-6 d-flex justify-content-left gap-5">
+            {order.isCancellationRequested &&
+              order.isCancellationApproved !== 1 &&
+              order.isCancellationApproved !== 2 && (
+                <>
+                  <button
+                    type="submit"
+                    className="btn btn-primary form-btn-text"
+                    onClick={handleApproveRequest}
+                    disabled={order.isCancellationApproved}
+                  >
+                    Confirm Request
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={handleRejectRequest}
+                    className="btn btn-danger form-btn-text"
+                  >
+                    Reject Request
+                  </button>
+                </>
+              )}
           </div>
         </div>
 

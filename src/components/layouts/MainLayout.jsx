@@ -102,6 +102,7 @@ export const MainLayout = () => {
         "All Orders",
         "Incomplete Orders",
         "Cancelation Requests",
+        "Cancelation Accepted",
       ];
       break;
     case `/orders/view/${id}`:
@@ -114,8 +115,22 @@ export const MainLayout = () => {
         "Back",
         "New Orders",
         "All Orders",
+        "Complete Orders",
         "Incomplete Orders",
         "Cancelation Requests",
+        "Cancelation Accepted",
+      ];
+      break;
+    case "/orders/approved-cancelation":
+      mainPath = "Orders";
+      subPaths = [
+        "Back",
+        "New Orders",
+        "All Orders",
+        "Complete Orders",
+        "Incomplete Orders",
+        "Cancelation Requests",
+        "Cancelation Accepted",
       ];
       break;
     case "/orders/incomplete":
@@ -124,8 +139,10 @@ export const MainLayout = () => {
         "Back",
         "New Orders",
         "All Orders",
+        "Complete Orders",
         "Incomplete Orders",
         "Cancelation Requests",
+        "Cancelation Accepted",
       ];
       break;
     case "/orders/cancel":
@@ -134,9 +151,31 @@ export const MainLayout = () => {
         "Back",
         "New Orders",
         "All Orders",
+        "Complete Orders",
         "Incomplete Orders",
         "Cancelation Requests",
+        "Cancelation Accepted",
       ];
+      break;
+    case "/orders/complete":
+      mainPath = "Orders";
+      subPaths = [
+        "Back",
+        "New Orders",
+        "All Orders",
+        "Complete Orders",
+        "Incomplete Orders",
+        "Cancelation Requests",
+        "Cancelation Accepted",
+      ];
+      break;
+    case "/review/comment":
+      mainPath = "Reviews";
+      subPaths = ["Back", "Ratings", "Comments"];
+      break;
+      case "/review/rating":
+      mainPath = "Reviews";
+      subPaths = ["Back", "Ratings", "Comments"];
       break;
     default:
       break;

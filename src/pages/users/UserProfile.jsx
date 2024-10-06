@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import admin from "../../assets/images/admin.png";
+import vendor from "../../assets/images/vendor.png";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useStateContext } from "../../contexts/NavigationContext";
 import axiosClient from "../../../axios-client";
@@ -130,6 +131,28 @@ export const UserProfile = () => {
     }
   };
 
+  const getUserImage = () => {
+    switch (users.role) {
+      case "1":
+        return admin;
+      case "3":
+        return vendor;
+      default:
+        return admin;
+    }
+  };
+
+  const profile_name = () => {
+    switch (users.role) {
+      case "1":
+        return 'Admin';
+      case "3":
+        return "Vendor";
+        case "2":
+        return "CSR";
+    }
+  }
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -137,10 +160,10 @@ export const UserProfile = () => {
   return (
     <section className="mb-4">
       <div className="container bg-white rounded-card p-4 theme-text-color">
-        <h3>Admin Profile</h3>
+        <h3>{profile_name()} Profile</h3>
         <div className="row">
           <div className="col-8 mt-2">
-            <h6 className="mt-4">Change User Details</h6>
+            <h6 className="mt-4">Change {profile_name()} Details</h6>
             <form onSubmit={handleSubmit}>
               <div className="d-flex gap-5">
                 <div
@@ -318,10 +341,10 @@ export const UserProfile = () => {
             </form>
           </div>
           <div className="col-4 d-flex justify-content-end">
-            <img
-              src={admin}
+          <img
+              src={getUserImage()}
               style={{ width: "100%", height: "60%" }}
-              alt="Admin"
+              alt={users.role}
             />
           </div>
         </div>
