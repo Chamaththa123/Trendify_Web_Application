@@ -126,6 +126,14 @@ export const Orders = () => {
           <div className="status-active-btn" style={{ width: "80px" }}>
             Complete
           </div>
+        ) : row.status === 4 ? (
+          <div className="status-cancel-requested-btn" style={{ width: "80px" }}>
+            Cancel Requested
+          </div>
+        ) : row.status === 3 ? (
+          <div className="status-inactive-btn" style={{ width: "80px" }}>
+            Cancel
+          </div>
         ) : null,
       wrap: false,
       minWidth: "200px",

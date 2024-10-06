@@ -1,4 +1,13 @@
-import { CustomerIcon, DashboardIcon, EstateIcon, OrderIcon, ProductIcon, SupplierIcon, UserIcon } from "./icons";
+import {
+  CustomerIcon,
+  DashboardIcon,
+  EstateIcon,
+  OrderIcon,
+  ProductIcon,
+  ReviewIcon,
+  SupplierIcon,
+  UserIcon,
+} from "./icons";
 
 export const newNavigationItems = [
   {
@@ -23,28 +32,42 @@ export const newNavigationItems = [
 
 export const adminSidebarItems = [
   { title: "Dashboard", link: "/", icon: DashboardIcon },
+  { title: "Customers", link: "/customers/approved", icon: CustomerIcon },
   { title: "Products", link: "/products", icon: EstateIcon },
-  { title: "Suppliers", link: "/suppliers", icon: SupplierIcon },
+  { title: "Users", link: "/users/vendors", icon: UserIcon },
+  { title: "Orders", link: "/orders/new", icon: OrderIcon },
 ];
 
-export const userSidebarItems = [
+export const vendorSidebarItems = [
   { title: "Dashboard", link: "/", icon: DashboardIcon },
-  { title: "Customers", link: "/customers/approved", icon: CustomerIcon }, 
-  { title: "Products", link: "/products", icon: ProductIcon }, 
+  { title: "Customers", link: "/customers/approved", icon: CustomerIcon },
+  { title: "Products", link: "/products", icon: ProductIcon },
+  { title: "Users", link: "/users/vendors", icon: UserIcon },
+  { title: "Orders", link: "/orders/new", icon: OrderIcon },
+  { title: "Reviews", link: "/review/comment", icon: ReviewIcon },
+];
+
+export const csrSidebarItems = [
+  { title: "Dashboard", link: "/", icon: DashboardIcon },
+  { title: "Customers", link: "/customers/approved", icon: CustomerIcon },
+  { title: "Products", link: "/products", icon: ProductIcon },
   { title: "Users", link: "/users/vendors", icon: UserIcon },
   { title: "Orders", link: "/orders/new", icon: OrderIcon },
 ];
 
 export const subPathLinks = {
-  "Vendor": "/users/vendors",
-  "CSR": "/users/csr",
+  Vendor: "/users/vendors",
+  CSR: "/users/csr",
   "Approved Customers": "/customers/approved",
   "Pending Customers": "/customers/pending",
   "New Orders": "/orders/new",
   "All Orders": "/orders/all",
   "Incomplete Orders": "/orders/incomplete",
+  "Complete Orders": "/orders/complete",
   "Cancelation Requests": "/orders/cancel",
   "Cancelation Accepted": "/orders/approved-cancelation",
+  Ratings: "/review/rating",
+  Comments: "/review/comment",
 };
 
 export const tableHeaderStyles = {

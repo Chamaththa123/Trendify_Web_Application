@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { adminSidebarItems, userSidebarItems } from "../../utils/dataArrays";
+import { adminSidebarItems, vendorSidebarItems } from "../../utils/dataArrays";
 import { useStateContext } from "../../contexts/NavigationContext";
 import logo from "../../assets/images/1.png";
 import { LogOutIcon } from "../../utils/icons";
@@ -14,12 +14,13 @@ export const SideBar = ({
 }) => {
   const location = useLocation(); // Get current location
   const { token, setUser, setToken, user } = useStateContext();
-  const sidebarItems = user?.role === "1" ? adminSidebarItems : userSidebarItems;
+  const sidebarItems = user?.role === "1" ? adminSidebarItems : vendorSidebarItems;
   
   const isUsersSectionActive = location.pathname.startsWith('/users');
   const isProductSectionActive = location.pathname.startsWith('/products');
   const isCustomerSectionActive = location.pathname.startsWith('/customers');
   const isOrderSectionActive = location.pathname.startsWith('/orders');
+  const isReviewSectionActive = location.pathname.startsWith('/review');
 
   return (
     <div>
@@ -33,6 +34,7 @@ export const SideBar = ({
             (item.link === "/users/vendors" && isUsersSectionActive) || 
             (item.link.startsWith('/products') && isProductSectionActive)|| 
             (item.link.startsWith('/customers') && isCustomerSectionActive) || 
+            (item.link.startsWith('/review') && isReviewSectionActive) || 
             (item.link.startsWith('/orders') && isOrderSectionActive);
 
           const NavIcon = item.icon;

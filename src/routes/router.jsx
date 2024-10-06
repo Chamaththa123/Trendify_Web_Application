@@ -19,6 +19,8 @@ import { IncompleteOrders } from "../pages/orders/IncompleteOrders";
 import { CancelOrders } from "../pages/orders/CancelOrders";
 import { AllOrders } from "../pages/orders/AllOrders";
 import { CancalationAcceptedOrders } from "../pages/orders/CancalationAcceptedOrders";
+import { Ratings } from "../pages/reviews/Ratings";
+import { Comments } from "../pages/reviews/Comments";
 
 const router = createBrowserRouter([
   {
@@ -142,6 +144,30 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute roles={["1", "3"]}>
             <CancalationAcceptedOrders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/orders/complete",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <CompleteOrders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/review/rating",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <Ratings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/review/comment",
+        element: (
+          <ProtectedRoute roles={["1", "3"]}>
+            <Comments />
           </ProtectedRoute>
         ),
       },
