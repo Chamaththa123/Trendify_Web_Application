@@ -33,16 +33,14 @@ export const newNavigationItems = [
 export const adminSidebarItems = [
   { title: "Dashboard", link: "/", icon: DashboardIcon },
   { title: "Customers", link: "/customers/approved", icon: CustomerIcon },
-  { title: "Products", link: "/products", icon: EstateIcon },
+  { title: "Products", link: "/products", icon: ProductIcon },
   { title: "Users", link: "/users/vendors", icon: UserIcon },
   { title: "Orders", link: "/orders/new", icon: OrderIcon },
 ];
 
 export const vendorSidebarItems = [
   { title: "Dashboard", link: "/", icon: DashboardIcon },
-  { title: "Customers", link: "/customers/approved", icon: CustomerIcon },
   { title: "Products", link: "/products", icon: ProductIcon },
-  { title: "Users", link: "/users/vendors", icon: UserIcon },
   { title: "Orders", link: "/orders/new", icon: OrderIcon },
   { title: "Reviews", link: "/review/comment", icon: ReviewIcon },
 ];
@@ -50,7 +48,6 @@ export const vendorSidebarItems = [
 export const csrSidebarItems = [
   { title: "Dashboard", link: "/", icon: DashboardIcon },
   { title: "Customers", link: "/customers/approved", icon: CustomerIcon },
-  { title: "Products", link: "/products", icon: ProductIcon },
   { title: "Users", link: "/users/vendors", icon: UserIcon },
   { title: "Orders", link: "/orders/new", icon: OrderIcon },
 ];

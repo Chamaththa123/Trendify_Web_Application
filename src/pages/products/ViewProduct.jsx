@@ -30,14 +30,16 @@ export const ViewProduct = () => {
   return (
     <section>
       <div className="container bg-white rounded-card p-4 theme-text-color">
-        <h3 className="mb-2">{product.name}</h3>
+        <h3 className="mb-5">{product.name}</h3>
         <div className="row">
           <div className="col-6 d-flex justify-content-center">
-            <img
-              src={product.image}
-              alt={product.name}
-              style={{ width: "80%", height: "auto", marginTop: "10px" }} // Adjust size as needed
-            />
+            <div>
+              <img
+                src={product.image}
+                alt={product.name}
+                style={{ width: "90%", height: "auto", marginTop: "1px" }}
+              />
+            </div>
           </div>
 
           <div className="col-5">
@@ -94,10 +96,9 @@ export const ViewProduct = () => {
               </div>
             </div>
 
-
-            <div className="d-flex mt-4 justify-content-between gap-3">
+            <div className=" mt-4">
               <div className="col-4 view-text1">Description</div>
-              <div className="col-9 view-details1">{product.description}</div>
+              <div className="view-details1">{product.description}</div>
             </div>
           </div>
         </div>

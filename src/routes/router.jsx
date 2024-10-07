@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Dashboard />
           </ProtectedRoute>
         ),
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Products />
           </ProtectedRoute>
         ),
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       {
         path: "/products/view/:id",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <ViewProduct />
           </ProtectedRoute>
         ),
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
       {
         path: "/users/vendors",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Vendors />
           </ProtectedRoute>
         ),
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
       {
         path: "/users/csr",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Csr />
           </ProtectedRoute>
         ),
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <UserProfile />
           </ProtectedRoute>
         ),
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
       {
         path: "/customers/approved",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Customer />
           </ProtectedRoute>
         ),
@@ -86,7 +86,7 @@ const router = createBrowserRouter([
       {
         path: "/customers/pending",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <PendingCustomer />
           </ProtectedRoute>
         ),
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
       {
         path: "/notifications",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Notifications />
           </ProtectedRoute>
         ),
@@ -102,7 +102,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/new",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Orders />
           </ProtectedRoute>
         ),
@@ -110,7 +110,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/view/:id",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <OrderDetails />
           </ProtectedRoute>
         ),
@@ -118,7 +118,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/all",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <AllOrders />
           </ProtectedRoute>
         ),
@@ -126,7 +126,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/incomplete",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <IncompleteOrders />
           </ProtectedRoute>
         ),
@@ -134,7 +134,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/cancel",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <CancelOrders />
           </ProtectedRoute>
         ),
@@ -142,7 +142,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/approved-cancelation",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <CancalationAcceptedOrders />
           </ProtectedRoute>
         ),
@@ -150,7 +150,7 @@ const router = createBrowserRouter([
       {
         path: "/orders/complete",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <CompleteOrders />
           </ProtectedRoute>
         ),
@@ -158,7 +158,7 @@ const router = createBrowserRouter([
       {
         path: "/review/rating",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Ratings />
           </ProtectedRoute>
         ),
@@ -166,7 +166,7 @@ const router = createBrowserRouter([
       {
         path: "/review/comment",
         element: (
-          <ProtectedRoute roles={["1", "3"]}>
+          <ProtectedRoute roles={["1", "3","2"]}>
             <Comments />
           </ProtectedRoute>
         ),

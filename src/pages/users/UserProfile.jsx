@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import admin from "../../assets/images/admin.png";
 import vendor from "../../assets/images/vendor.png";
+import csr from "../../assets/images/csr.png";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useStateContext } from "../../contexts/NavigationContext";
 import axiosClient from "../../../axios-client";
@@ -138,7 +139,7 @@ export const UserProfile = () => {
       case "3":
         return vendor;
       default:
-        return admin;
+        return csr;
     }
   };
 

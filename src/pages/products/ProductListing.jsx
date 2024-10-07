@@ -249,7 +249,8 @@ export const ProductListing = ({ id, title }) => {
           <div className="status-active-btn">Active</div>
         ) : null,
       wrap: false,
-      minWidth: "200px",
+      minWidth: "50px",
+      center:true
     },
     {
       name: "Action",
@@ -285,6 +286,7 @@ export const ProductListing = ({ id, title }) => {
         </div>
       ),
       minWidth: "50px",
+      center:true
     },
   ];
 

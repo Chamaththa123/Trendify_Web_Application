@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { adminSidebarItems, vendorSidebarItems } from "../../utils/dataArrays";
+import { adminSidebarItems, vendorSidebarItems,csrSidebarItems } from "../../utils/dataArrays";
 import { useStateContext } from "../../contexts/NavigationContext";
 import logo from "../../assets/images/1.png";
 import { LogOutIcon } from "../../utils/icons";
@@ -14,7 +14,7 @@ export const SideBar = ({
 }) => {
   const location = useLocation(); // Get current location
   const { token, setUser, setToken, user } = useStateContext();
-  const sidebarItems = user?.role === "1" ? adminSidebarItems : vendorSidebarItems;
+  const sidebarItems = user?.role === "1" ? adminSidebarItems : user?.role === "3" ? vendorSidebarItems : csrSidebarItems;
   
   const isUsersSectionActive = location.pathname.startsWith('/users');
   const isProductSectionActive = location.pathname.startsWith('/products');
