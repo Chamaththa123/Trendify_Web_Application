@@ -20,7 +20,7 @@ export const Comments = () => {
         );
         setComments(response.data);
       } catch (error) {
-        console.error("Failed to fetch products", error);
+        console.error("Failed to fetch comments", error);
       }
     };
     fetchComments();
@@ -44,7 +44,7 @@ export const Comments = () => {
   const TABLE_COMMENTS = [
     {
       name: "Customer Name",
-      selector: (row) => row.customerId,
+      selector: (row) => row.customerName,
       wrap: true,
       compact: true,
       maxWidth: "auto",
