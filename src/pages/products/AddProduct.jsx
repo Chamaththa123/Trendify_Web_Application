@@ -8,9 +8,11 @@ import { useStateContext } from "../../contexts/NavigationContext";
 
 export const AddProduct = ({ id, userType, handleLoading }) => {
   
+  // Extract user data from context (contains user info like id)
   const { user } = useStateContext();
   const userId = user.id;
   
+   // Initial state of the form data
   const initialFormData = {
     name: "",
     product_idProductList: "",
@@ -22,6 +24,7 @@ export const AddProduct = ({ id, userType, handleLoading }) => {
     Product_idVendor:userId
   };
 
+  // State variables for form data, error messages, and available product lists
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [productList, setProductList] = useState([]);
@@ -44,6 +47,7 @@ export const AddProduct = ({ id, userType, handleLoading }) => {
     fetchProductList();
   }, []);
 
+  // / Handle changes when a product list is selected from the dropdown
   const handleProductListChange = (selectedOption) => {
     setFormData((prevDetails) => ({
       ...prevDetails,

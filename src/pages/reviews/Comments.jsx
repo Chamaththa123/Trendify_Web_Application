@@ -12,6 +12,7 @@ export const Comments = () => {
 
   const [comments, setComments] = useState([]);
 
+  // Fetching comments on component mount
   useEffect(() => {
     const fetchComments = async () => {
       try {

@@ -3,17 +3,19 @@ import Cookies from "js-cookie";
 import PropTypes from "prop-types";
 
 const StateContext = createContext({
-  user: null,
-  token: null,
-  setUser: () => { },
-  setToken: () => { },
-  setShowSalesman: () => { }, // Add setShowSalesman function
+  user: null, // Initial user state
+  token: null, // Initial token state
+  setUser: () => {}, // Function to set user state
+  setToken: () => {}, // Function to set token state
 });
 
 export const ContextProvider = ({ children }) => {
+  // Retrieve the stored user from cookies, if available
   const storedUser = Cookies.get("_user");
   const [user, _setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
   const [token, _setToken] = useState(Cookies.get("_auth"));
+
+  // Function to set the token state and manage cookies
   const setToken = (token) => {
     _setToken(token);
     if (token) {
@@ -23,6 +25,7 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  // Function to set the user state and manage cookies
   const setUser = (user) => {
     _setUser(user);
     if (user) {

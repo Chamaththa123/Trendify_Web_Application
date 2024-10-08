@@ -8,9 +8,11 @@ import axiosClient from "../../../axios-client";
 import Swal from "sweetalert2";
 
 export const UserProfile = () => {
+  // Get the logged-in user's details from the context
   const { user } = useStateContext();
   const userId = user.id;
 
+  // States for user data, password change, loading state, and form validation errors
   const [users, setUser] = useState({
     first_Name: "",
     last_Name: "",
@@ -27,6 +29,7 @@ export const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
 
+  // Fetch user details by userId from the API
   useEffect(() => {
     const fetchUserById = async () => {
       try {
@@ -42,14 +45,17 @@ export const UserProfile = () => {
     fetchUserById();
   }, [userId]);
 
+  // Handle input changes for user details
   const handleChange = (e) => {
     setUser({ ...users, [e.target.name]: e.target.value });
   };
 
+  // Handle input changes for password change fields
   const handlePasswordChange = (e) => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
+  // Validate user profile details before updating
   const validateUserDetails = () => {
     const newErrors = {};
     if (!users.first_Name) newErrors.first_Name = "First Name is required";
@@ -60,6 +66,7 @@ export const UserProfile = () => {
     return newErrors;
   };
 
+  // Validate password change details before submitting
   const validatePasswordChange = () => {
     const newErrors = {};
     if (!passwordData.currentPassword)
@@ -69,6 +76,7 @@ export const UserProfile = () => {
     return newErrors;
   };
 
+  // Handle profile update form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateUserDetails();
@@ -98,6 +106,7 @@ export const UserProfile = () => {
     }
   };
 
+  // Handle password change form submission
   const handleChangePassword = async (e) => {
     e.preventDefault();
     const newErrors = validatePasswordChange();
@@ -132,6 +141,7 @@ export const UserProfile = () => {
     }
   };
 
+  // Get the user image based on their role
   const getUserImage = () => {
     switch (users.role) {
       case "1":
@@ -143,6 +153,7 @@ export const UserProfile = () => {
     }
   };
 
+  // Get the profile name based on their role
   const profile_name = () => {
     switch (users.role) {
       case "1":

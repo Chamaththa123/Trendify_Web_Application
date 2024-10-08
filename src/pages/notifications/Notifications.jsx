@@ -5,9 +5,11 @@ import { ChatIcon } from "../../utils/icons";
 import TimeAgo from "timeago-react";
 
 const Notifications = () => {
+  // Retrieve the user context to access user details
   const { user } = useStateContext();
   const receiverId = user.id;
 
+  // State to hold notifications and loading status
   const [notifications, setNotifications] = useState([]);
   const [notificationsTableLoading, setNotificationsTableLoading] =
     useState(false);
@@ -26,7 +28,6 @@ const Notifications = () => {
     fetchNotifications();
   }, [notificationsTableLoading]);
 
-  console.log(notifications);
   return (
     <section>
       <div className="container bg-white rounded-card p-4 ">

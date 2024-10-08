@@ -7,18 +7,25 @@ import hero from "../../assets/images/signIn.png";
 import logo from "../../assets/images/1.1.png";
 
 const SignIn = () => {
+  // Destructuring `setUser` and `setToken` from context to update user information and authentication token globally
     const { setUser, setToken } = useStateContext();
+
+    // State to manage alert message and whether the alert should be displayed
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
+
+  // References to input fields for email and password
   const emailRef = useRef();
   const passwordRef = useRef();
 
+  // State to manage form validation errors
   const [formErrors, setFormErrors] = useState({
     Email: "",
     Password: "",
   });
 
+  // Validation function for login form input fields
   const validate = (loginData) => {
     const errors = {};
     if (!loginData.Email) {
@@ -33,6 +40,7 @@ const SignIn = () => {
     return errors;
   };
 
+   // Function to handle form submission for login
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -72,9 +80,6 @@ const SignIn = () => {
         <div className="col-md-6 d-flex align-items-center justify-content-center text-white theme-bg-color">
           <div className=" bg-white rounded-card col-md-9 p-4 theme-text-color">
           <center><img src={logo} alt="Logo" style={{width:'300px',marginTop:'10px'}}/></center>
-            {/* <h2 className="text-center mb-5 mt-2">
-              <strong>Welcome Back</strong>
-            </h2> */}
             <form  onSubmit={handleLogin}>
               <div class="form-group my-3">
                 <label for="exampleInputEmail1" className="mb-2">Email address</label>
