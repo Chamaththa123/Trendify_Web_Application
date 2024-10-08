@@ -220,26 +220,6 @@ export const MainLayout = () => {
               </div>
             </div>
           </div>
-
-          {/* <div className="d-flex align-items-center">
-              <div className="position-relative" ref={dropdownRef}>
-                <div
-                  className="d-flex align-items-center gap-2 cursor-pointer"
-                  onClick={() => setSignOutVisible(!signOutVisible)}
-                >
-                  <div className="bg-secondary rounded-circle">
-                    <UserIcon className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                {signOutVisible && (
-                  <div className="position-absolute top-100 end-0 bg-white w-150 p-3 shadow-lg">
-                    <div className="w-100" onClick={handleLogout}>
-                      <div className="py-2 cursor-pointer">Logout</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div> */}
         </div>
         <div className="sub-header d-flex align-items-center">
           {subPaths.map((path, index) =>
