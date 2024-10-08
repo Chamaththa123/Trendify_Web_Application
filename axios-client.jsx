@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 const axiosClient = axios.create({
-  baseURL: `https://localhost:44305/api/`,
+  baseURL: `https://localhost:44305/api/`,  // Base URL for API requests
 
   headers: {
     "Content-Type": "application/json",
@@ -12,12 +12,14 @@ const axiosClient = axios.create({
   },
 });
 
+// Interceptor for processing requests before they are sent
 axiosClient.interceptors.request.use((config) => {
   const token = Cookies.get("_auth");
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
+// Interceptor for processing responses or handling errors
 axiosClient.interceptors.response.use(
   (response) => {
     return response;
@@ -26,7 +28,7 @@ axiosClient.interceptors.response.use(
     try {
       const { response } = error;
       if (response.status === 401) {
-        Cookies.remove("_auth");
+        Cookies.remove("_auth"); // Remove the auth token from cookies
         localStorage.setItem(
           "TOKEN_EXPIRE",
           "Your login has expired. Please log in again to continue."

@@ -26,6 +26,7 @@ export const Ratings = () => {
   const [ratings, setRatings] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
 
+  // Fetching ratings on component mount
   useEffect(() => {
     const fetchRatings = async () => {
       try {

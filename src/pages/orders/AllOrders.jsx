@@ -9,10 +9,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
 
 export const AllOrders = () => {
+  // Access the user context to get user details
   const { user } = useStateContext();
   const userId = user.id;
 
   const navigate = useNavigate();
+
+  // State to store orders data
   const [orders, setOrders] = useState([]);
   const [orderTableLoading, setOrderTableLoading] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState("");
@@ -138,7 +141,10 @@ export const AllOrders = () => {
             Complete
           </div>
         ) : row.status === 4 ? (
-          <div className="status-cancel-requested-btn" style={{ width: "80px" }}>
+          <div
+            className="status-cancel-requested-btn"
+            style={{ width: "80px" }}
+          >
             Cancel Requested
           </div>
         ) : row.status === 3 ? (

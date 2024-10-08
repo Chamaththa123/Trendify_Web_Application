@@ -8,14 +8,18 @@ import Swal from "sweetalert2";
 import { useStateContext } from "../../contexts/NavigationContext";
 
 export const OrderDetails = () => {
+  // Extract order ID from URL parameters
   const { id } = useParams();
+  // / Get user context (includes user data)
   const { user } = useStateContext();
   const userId = user.id;
+
+  // Component state for order data and loading statuses
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tableLoading, setTableLoading] = useState(false);
-  const [radioSelection, setRadioSelection] = useState(null);
 
+  // Fetch the order details when the component mounts
   useEffect(() => {
     const fetchOrderById = async () => {
       try {
@@ -31,10 +35,12 @@ export const OrderDetails = () => {
     fetchOrderById();
   }, [id]);
 
+  // Show loading message while fetching order data
   if (loading) {
     return <p>Loading...</p>;
   }
 
+  // Show message if no order is found
   if (!order) {
     return <p>No order found!</p>;
   }
@@ -53,6 +59,7 @@ export const OrderDetails = () => {
     });
   };
 
+  // Handle marking an item as delivered
   const handleIsDeliveredChange = (orderItem) => {
     Swal.fire({
       title: "Are you sure?",
@@ -94,6 +101,7 @@ export const OrderDetails = () => {
     });
   };
 
+  // Handle approving a cancellation request
   const handleApproveRequest = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -131,6 +139,7 @@ export const OrderDetails = () => {
     });
   };
 
+  // Handle rejecting a cancellation request
   const handleRejectRequest = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -168,6 +177,7 @@ export const OrderDetails = () => {
     });
   };
 
+  // Define columns for the DataTable
   const TABLE_ORDER_ITEM = [
     {
       name: "Product",
@@ -365,7 +375,9 @@ export const OrderDetails = () => {
                 ) : order.status === 2 ? (
                   <div className="status-active-btn">Complete</div>
                 ) : order.status === 4 ? (
-                  <div className="status-cancel-requested-btn">Cancel Requested</div>
+                  <div className="status-cancel-requested-btn">
+                    Cancel Requested
+                  </div>
                 ) : order.status === 3 ? (
                   <div className="status-inactive-btn">Cancel</div>
                 ) : null}{" "}

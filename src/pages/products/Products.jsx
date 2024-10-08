@@ -39,6 +39,7 @@ export const Products = () => {
     fetchProducts();
   }, [productTableLoading]);
 
+  //product status change function
   const handleStatusChange = (product) => {
     Swal.fire({
       title: "Are you sure?",
@@ -73,6 +74,7 @@ export const Products = () => {
     });
   };
 
+  //product delete function
   const handleDelete = (product) => {
     Swal.fire({
       title: "Are you sure?",
@@ -107,6 +109,7 @@ export const Products = () => {
     });
   };
 
+  //stock reset function
   const handleResetStock = (product) => {
     Swal.fire({
       title: "Are you sure?",
@@ -141,6 +144,7 @@ export const Products = () => {
     });
   };
 
+  //stock update function
   const handleUpdateStock = (product) => {
     setSelectedProductId(product.id);
   };
@@ -213,7 +217,10 @@ export const Products = () => {
             In Stock
           </div>
         ) : row.stockStatus === "Low Stock" ? (
-          <div className="status-cancel-requested-btn" style={{ width: "70px" }}>
+          <div
+            className="status-cancel-requested-btn"
+            style={{ width: "70px" }}
+          >
             Low Stock
           </div>
         ) : null,

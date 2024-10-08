@@ -12,7 +12,7 @@ export const ProductListing = ({ id, title }) => {
   const userId = user.id;
   const userRole = user.role;
 
-  console.log("userId: " , user)
+  console.log("userId: ", user);
   const [productList, setProductList] = useState([]);
   const [productListTableLoading, setProductListTableLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -30,6 +30,7 @@ export const ProductListing = ({ id, title }) => {
 
   const handleLoading = () => setProductListTableLoading((pre) => !pre);
 
+  //reset form data
   const resetEditForm = () => {
     setEditProductList({
       id: "0",
@@ -66,6 +67,7 @@ export const ProductListing = ({ id, title }) => {
     });
   };
 
+  //edit product list function
   const handleEdit = () => {
     const validationErrors = validate(editProductList);
     if (Object.keys(validationErrors).length > 0) {
@@ -114,6 +116,7 @@ export const ProductListing = ({ id, title }) => {
     return errors;
   };
 
+  //product list
   const handleSave = () => {
     const validationErrors = validate(addProductList);
     if (Object.keys(validationErrors).length > 0) {
@@ -141,6 +144,7 @@ export const ProductListing = ({ id, title }) => {
       });
   };
 
+  //product list status change function
   const handleStatusChange = (productList) => {
     axiosClient
       .patch(`ProductLists/${productList.id}/state`)
@@ -162,6 +166,7 @@ export const ProductListing = ({ id, title }) => {
       });
   };
 
+  //product delete function
   const handleDelete = (productList) => {
     Swal.fire({
       title: "Are you sure?",
@@ -171,8 +176,8 @@ export const ProductListing = ({ id, title }) => {
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "No, cancel!",
       reverseButtons: true,
-      cancelButtonColor: '#d33',
-      confirmButtonColor: '#3085d6'
+      cancelButtonColor: "#d33",
+      confirmButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosClient
@@ -202,7 +207,6 @@ export const ProductListing = ({ id, title }) => {
       }
     });
   };
-  
 
   useEffect(() => {
     // Destroy any previous tooltips to avoid duplication or issues
@@ -256,7 +260,7 @@ export const ProductListing = ({ id, title }) => {
         ) : null,
       wrap: false,
       minWidth: "50px",
-      center:true
+      center: true,
     },
     ...(userRole !== "3"
       ? [
@@ -298,7 +302,6 @@ export const ProductListing = ({ id, title }) => {
         ]
       : []),
   ];
-  
 
   return (
     <div
@@ -324,110 +327,111 @@ export const ProductListing = ({ id, title }) => {
           <div className="modal-body theme-text-color">
             <div className=""></div>
             {userRole !== "3" && (
-  <>
-    <div className="row">
-      <div className="col-12 col-md-6">
-        <div className="form-group">
-          <div className="modal-label">Name</div>
-          {editProductList.id !== "0" ? (
-            <input
-              name="Name"
-              type="text"
-              className="form-control my-2 modal-label"
-              value={editProductList.Name}
-              onChange={(e) =>
-                setEditProductList({
-                  ...editProductList,
-                  Name: e.target.value,
-                })
-              }
-            />
-          ) : (
-            <input
-              value={addProductList.Name}
-              name="Name"
-              type="text"
-              className="form-control my-2 modal-label"
-              onChange={(e) =>
-                setAddProductList({
-                  ...addProductList,
-                  Name: e.target.value,
-                })
-              }
-            />
-          )}
-          {errors.Name && <div className="error-text">{errors.Name}</div>}
-        </div>
-      </div>
+              <>
+                <div className="row">
+                  <div className="col-12 col-md-6">
+                    <div className="form-group">
+                      <div className="modal-label">Name</div>
+                      {editProductList.id !== "0" ? (
+                        <input
+                          name="Name"
+                          type="text"
+                          className="form-control my-2 modal-label"
+                          value={editProductList.Name}
+                          onChange={(e) =>
+                            setEditProductList({
+                              ...editProductList,
+                              Name: e.target.value,
+                            })
+                          }
+                        />
+                      ) : (
+                        <input
+                          value={addProductList.Name}
+                          name="Name"
+                          type="text"
+                          className="form-control my-2 modal-label"
+                          onChange={(e) =>
+                            setAddProductList({
+                              ...addProductList,
+                              Name: e.target.value,
+                            })
+                          }
+                        />
+                      )}
+                      {errors.Name && (
+                        <div className="error-text">{errors.Name}</div>
+                      )}
+                    </div>
+                  </div>
 
-      <div className="col-12 col-md-6">
-        <div className="form-group">
-          <div className="modal-label">Description</div>
-          {editProductList.id !== "0" ? (
-            <input
-              name="Description"
-              type="text"
-              className="form-control my-2 modal-label"
-              value={editProductList.Description}
-              onChange={(e) =>
-                setEditProductList({
-                  ...editProductList,
-                  Description: e.target.value,
-                })
-              }
-            />
-          ) : (
-            <input
-              value={addProductList.Description}
-              name="Description"
-              type="text"
-              className="form-control my-2 modal-label"
-              onChange={(e) =>
-                setAddProductList({
-                  ...addProductList,
-                  Description: e.target.value,
-                })
-              }
-            />
-          )}
-          {errors.Description && (
-            <div className="error-text">{errors.Description}</div>
-          )}
-        </div>
-      </div>
-    </div>
+                  <div className="col-12 col-md-6">
+                    <div className="form-group">
+                      <div className="modal-label">Description</div>
+                      {editProductList.id !== "0" ? (
+                        <input
+                          name="Description"
+                          type="text"
+                          className="form-control my-2 modal-label"
+                          value={editProductList.Description}
+                          onChange={(e) =>
+                            setEditProductList({
+                              ...editProductList,
+                              Description: e.target.value,
+                            })
+                          }
+                        />
+                      ) : (
+                        <input
+                          value={addProductList.Description}
+                          name="Description"
+                          type="text"
+                          className="form-control my-2 modal-label"
+                          onChange={(e) =>
+                            setAddProductList({
+                              ...addProductList,
+                              Description: e.target.value,
+                            })
+                          }
+                        />
+                      )}
+                      {errors.Description && (
+                        <div className="error-text">{errors.Description}</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-    <div className="mt-4">
-      {editProductList.id !== "0" ? (
-        <div className="d-flex justify-content-end">
-          <button
-            onClick={() => handleCancelEditProductList()}
-            className="btn btn-danger me-2 form-btn-text"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => handleEdit()}
-            className="btn btn-primary form-btn-text"
-          >
-            Update
-          </button>
-        </div>
-      ) : (
-        <div className="d-flex justify-content-end">
-          <button
-            type="submit"
-            onClick={() => handleSave()}
-            className="btn btn-primary form-btn-text"
-          >
-            Add List
-          </button>
-        </div>
-      )}
-    </div>
-  </>
-)}
-
+                <div className="mt-4">
+                  {editProductList.id !== "0" ? (
+                    <div className="d-flex justify-content-end">
+                      <button
+                        onClick={() => handleCancelEditProductList()}
+                        className="btn btn-danger me-2 form-btn-text"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => handleEdit()}
+                        className="btn btn-primary form-btn-text"
+                      >
+                        Update
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="d-flex justify-content-end">
+                      <button
+                        type="submit"
+                        onClick={() => handleSave()}
+                        className="btn btn-primary form-btn-text"
+                      >
+                        Add List
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
 
             <div>
               <DataTable
