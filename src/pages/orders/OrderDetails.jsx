@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../../../axios-client";
 import DataTable from "react-data-table-component";
 import { tableHeaderStyles } from "../../utils/dataArrays";
-import { ChangeIcon, DeliveredIcon, NoAccessIcon } from "../../utils/icons";
+import { ChangeIcon, DeliveredIcon, DeliveredStatus, NoAccessIcon, PendingStatus, ProcessingStatus } from "../../utils/icons";
 import Swal from "sweetalert2";
 import { useStateContext } from "../../contexts/NavigationContext";
 
@@ -275,10 +275,28 @@ export const OrderDetails = () => {
     },
   ];
 
+  const status = order.status
+  const getButtonStyles = (currentStatus) => ({
+    backgroundColor: status  >= currentStatus ? "#ff7a28" : "#efefef",
+    border: 'none',
+    borderRadius: '100%',
+    padding: '15px',
+  });
+
+  const getIconColor = (currentStatus) => (status >= currentStatus ? "white" : "#767575");
+
+  const getDashLineStyles = (lineIndex) => ({
+    borderTop: "1px dashed",
+    borderColor: status > lineIndex ? "#ff7a28" : "#000",
+    width: "100%",
+    margin: "27px 10px 10px -15px",
+  });
+
+  const getTextColor = (currentStatus) => (status >= currentStatus ? "#ff7a28" : "#767575");
   return (
     <section>
       <div className="container bg-white rounded-card p-4 theme-text-color">
-        <h4 className="mb-5">Order : #OR123</h4>
+        <h4 className="mb-5">Order : {order.orderCode}</h4>
         <div className="row form-btn-text">
           <div className="col-6 d-flex justify-content-left">
             <div className="row">
@@ -444,6 +462,36 @@ export const OrderDetails = () => {
           </div>
         </div>
 
+<div className="d-flex justify-content-center mt-5 mb-5">
+      <div className="col-1">
+        <button style={getButtonStyles(0)} disabled>
+          <PendingStatus width={25} height={25} color={getIconColor(0)} />
+        </button>
+        <span style={{ color: getTextColor(0), marginTop: "5px",fontSize:'12px' }}>Pending</span>
+      </div>
+
+      <div className="col-1">
+      <div style={getDashLineStyles(0)} />
+      </div>
+
+      <div className="col-1">
+        <button style={getButtonStyles(1)} disabled>
+          <ProcessingStatus width={25} height={25} color={getIconColor(1)} />
+        </button>
+        <span style={{ color: getTextColor(1), marginTop: "5px",fontSize:'12px' }}>Processing</span>
+      </div>
+
+      <div className="col-1">
+      <div style={getDashLineStyles(1)} />
+      </div>
+
+      <div className="col-1">
+        <button style={getButtonStyles(2)} disabled>
+          <DeliveredStatus width={25} height={25} color={getIconColor(2)} />
+        </button>
+        <span style={{ color: getTextColor(2), marginTop: "5px",fontSize:'12px' }}>Delivered</span>
+      </div>
+    </div>
         <div className="container mt-3">
           <DataTable
             columns={TABLE_ORDER_ITEM}
