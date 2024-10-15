@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export const CancalationAcceptedOrders = () => {
   const { user } = useStateContext();
+  const userRole = user.role;
   const userId = user.id;
 
   const navigate = useNavigate();
@@ -23,7 +24,12 @@ export const CancalationAcceptedOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axiosClient.get(`/Orders/vendor/${userId}`);
+        let response;
+        if (userRole === "1" || userRole === "2") {
+          response = await axiosClient.get("/Orders");
+        } else if (userRole === "3") {
+          response = await axiosClient.get(`/Orders/vendor/${userId}`);
+        }
         const filteredOrders = response.data.filter(
           (order) => order.status === 3
         );

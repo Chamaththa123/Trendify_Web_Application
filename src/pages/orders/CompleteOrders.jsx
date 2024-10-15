@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export const CompleteOrders = () => {
   const { user } = useStateContext();
+  const userRole = user.role;
   const userId = user.id;
 
   const navigate = useNavigate();
@@ -23,7 +24,11 @@ export const CompleteOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axiosClient.get(`/Orders/vendor/${userId}`);
+        if (userRole === "1" || userRole === "2") {
+          response = await axiosClient.get("/Orders");
+        } else if (userRole === "3") {
+          response = await axiosClient.get(`/Orders/vendor/${userId}`);
+        }
         const filteredOrders = response.data.filter(
           (order) => order.status === 2
         );

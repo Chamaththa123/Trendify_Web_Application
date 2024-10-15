@@ -12,6 +12,7 @@ export const AllOrders = () => {
   // Access the user context to get user details
   const { user } = useStateContext();
   const userId = user.id;
+  const userRole = user.role;
 
   const navigate = useNavigate();
 
@@ -28,7 +29,12 @@ export const AllOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axiosClient.get(`/Orders/vendor/${userId}`);
+        let response;
+        if (userRole === "1" || userRole === "2") {
+          response = await axiosClient.get("/Orders");
+        } else if (userRole === "3") {
+          response = await axiosClient.get(`/Orders/vendor/${userId}`);
+        }
         setOrders(response.data);
       } catch (error) {
         console.error("Failed to fetch orders", error);

@@ -6,14 +6,13 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 const AddUsers = ({ id, userType, handleLoading }) => {
   // Initial form data
   const initialFormData = {
-    Username: "",
     First_Name: "",
     Last_Name: "",
     Email: "",
     PasswordHash: "",
     NIC: "",
     Address: "",
-    Role: userType === "vendor" ? '3' : "2",
+    Role: userType === "vendor" ? "3" : "2",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -31,7 +30,6 @@ const AddUsers = ({ id, userType, handleLoading }) => {
   // Validating the data
   const validate = (data) => {
     const errors = {};
-    if (!data.Username) errors.Username = "User Name is required.";
     if (!data.First_Name) errors.First_Name = "First Name is required.";
     if (!data.Last_Name) errors.Last_Name = "Last Name is required.";
     if (!data.Email) errors.Email = "Email is required.";
@@ -53,14 +51,18 @@ const AddUsers = ({ id, userType, handleLoading }) => {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: `${userType === "vendor" ? "Vendor" : "CSR Member"} added successfully!`,
+          text: `${
+            userType === "vendor" ? "Vendor" : "CSR Member"
+          } added successfully!`,
         });
         setFormData(initialFormData);
         handleLoading();
       } catch (error) {
         Swal.fire({
           icon: "error",
-          title: `Fail to add ${userType === "vendor" ? "Vendor" : "CSR Member"} `,
+          title: `Fail to add ${
+            userType === "vendor" ? "Vendor" : "CSR Member"
+          } ${error.message === 409 ? "" : "Email is already in use"}`,
           text: "Please try again.",
         });
       }
@@ -132,21 +134,6 @@ const AddUsers = ({ id, userType, handleLoading }) => {
               <div className="row mt-2">
                 <div className="col-12 col-md-6">
                   <div className="form-group">
-                    <label className="modal-label">User Name</label>
-                    <input
-                      value={formData.Username}
-                      name="Username"
-                      type="text"
-                      onChange={handleChange}
-                      className="form-control my-2 modal-label"
-                    />
-                    {errors.Username && (
-                      <div className="error-text">{errors.Username}</div>
-                    )}
-                  </div>
-                </div>
-                <div className="col-12 col-md-6">
-                  <div className="form-group">
                     <label className="modal-label">User Email</label>
                     <input
                       value={formData.Email}
@@ -160,9 +147,6 @@ const AddUsers = ({ id, userType, handleLoading }) => {
                     )}
                   </div>
                 </div>
-              </div>
-
-              <div className="row mt-2">
                 <div className="col-12 col-md-6">
                   <div className="form-group">
                     <label className="modal-label">NIC</label>
@@ -178,6 +162,9 @@ const AddUsers = ({ id, userType, handleLoading }) => {
                     )}
                   </div>
                 </div>
+              </div>
+
+              <div className="row mt-2">
                 <div className="col-12 col-md-6">
                   <div className="form-group">
                     <label className="modal-label">Address</label>
@@ -193,9 +180,6 @@ const AddUsers = ({ id, userType, handleLoading }) => {
                     )}
                   </div>
                 </div>
-              </div>
-
-              <div className="row mt-2">
                 <div className="col-12 col-md-6">
                   <div className="form-group">
                     <label className="modal-label">Password</label>
@@ -222,10 +206,7 @@ const AddUsers = ({ id, userType, handleLoading }) => {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn btn-primary form-btn-text"
-              >
+              <button type="submit" className="btn btn-primary form-btn-text">
                 Save
               </button>
             </div>
