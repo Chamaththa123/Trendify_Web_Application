@@ -78,7 +78,7 @@ export const ViewProduct = () => {
                     In Stock
                   </div>
                 ) : product.stockStatus === "Low Stock" ? (
-                  <div className="status-active-btn" style={{ width: "70px" }}>
+                  <div className="status-cancel-requested-btn" style={{ width: "70px" }}>
                     Low Stock
                   </div>
                 ) : null}

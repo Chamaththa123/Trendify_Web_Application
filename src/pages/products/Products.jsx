@@ -18,26 +18,38 @@ import Swal from "sweetalert2";
 import { UpdateStock } from "./UpdateStock";
 import { AddProduct } from "./AddProduct";
 import { Link, useNavigate } from "react-router-dom";
+import { useStateContext } from "../../contexts/NavigationContext";
 
 export const Products = () => {
+
+  const { user } = useStateContext();
+  const userId = user.id;
+  const userRole = user.role;
+
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  console.log(products)
   const [productTableLoading, setProductTableLoading] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
   const handleLoading = () => setProductTableLoading((pre) => !pre);
 
   // Fetching products from the backend
-  useEffect(() => {
+ useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosClient.get("/Products");
+        let response;
+        if (userRole === "1" || userRole === "2") {
+          response = await axiosClient.get("/Products");
+        } else if (userRole === "3") {
+          response = await axiosClient.get(`Products/vendorId/${userId}`);
+        }
         setProducts(response.data);
       } catch (error) {
         console.error("Failed to fetch products", error);
       }
     };
     fetchProducts();
-  }, [productTableLoading]);
+  }, [userRole, productTableLoading, userId]);
 
   //product status change function
   const handleStatusChange = (product) => {
