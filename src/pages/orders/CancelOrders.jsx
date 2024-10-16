@@ -24,6 +24,7 @@ export const CancelOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        let response;
         if (userRole === "1" || userRole === "2") {
           response = await axiosClient.get("/Orders");
         } else if (userRole === "3") {
