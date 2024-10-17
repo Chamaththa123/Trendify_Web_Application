@@ -60,7 +60,7 @@ export const MainLayout = () => {
   switch (location.pathname) {
     case "/":
       mainPath = "Dashboard";
-      subPaths = ["Back", "New Job"];
+      subPaths = ["Back"];
       break;
     case "/products":
       mainPath = "Products";
@@ -173,7 +173,7 @@ export const MainLayout = () => {
       mainPath = "Reviews";
       subPaths = ["Back", "Ratings", "Comments"];
       break;
-      case "/review/rating":
+    case "/review/rating":
       mainPath = "Reviews";
       subPaths = ["Back", "Ratings", "Comments"];
       break;
