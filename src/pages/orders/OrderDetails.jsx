@@ -3,7 +3,14 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../../../axios-client";
 import DataTable from "react-data-table-component";
 import { tableHeaderStyles } from "../../utils/dataArrays";
-import { ChangeIcon, DeliveredIcon, DeliveredStatus, NoAccessIcon, PendingStatus, ProcessingStatus } from "../../utils/icons";
+import {
+  ChangeIcon,
+  DeliveredIcon,
+  DeliveredStatus,
+  NoAccessIcon,
+  PendingStatus,
+  ProcessingStatus,
+} from "../../utils/icons";
 import Swal from "sweetalert2";
 import { useStateContext } from "../../contexts/NavigationContext";
 
@@ -13,6 +20,7 @@ export const OrderDetails = () => {
   // / Get user context (includes user data)
   const { user } = useStateContext();
   const userId = user.id;
+  const userRole = user.role;
 
   // Component state for order data and loading statuses
   const [order, setOrder] = useState(null);
@@ -230,7 +238,7 @@ export const OrderDetails = () => {
       name: "Action",
       cell: (row) => (
         <div>
-          {userId === row.vendorId ? (
+          {userId === row.vendorId || userRole === '1' ? (
             order.isCancellationRequested &&
             order.isCancellationApproved == 0 ? (
               <div className="text-danger">Awaiting Approval</div>
@@ -275,15 +283,16 @@ export const OrderDetails = () => {
     },
   ];
 
-  const status = order.status
+  const status = order.status;
   const getButtonStyles = (currentStatus) => ({
-    backgroundColor: status  >= currentStatus ? "#ff7a28" : "#efefef",
-    border: 'none',
-    borderRadius: '100%',
-    padding: '15px',
+    backgroundColor: status >= currentStatus ? "#ff7a28" : "#efefef",
+    border: "none",
+    borderRadius: "100%",
+    padding: "15px",
   });
 
-  const getIconColor = (currentStatus) => (status >= currentStatus ? "white" : "#767575");
+  const getIconColor = (currentStatus) =>
+    status >= currentStatus ? "white" : "#767575";
 
   const getDashLineStyles = (lineIndex) => ({
     borderTop: "1px dashed",
@@ -292,10 +301,11 @@ export const OrderDetails = () => {
     margin: "27px 10px 10px -15px",
   });
 
-  const getTextColor = (currentStatus) => (status >= currentStatus ? "#ff7a28" : "#767575");
+  const getTextColor = (currentStatus) =>
+    status >= currentStatus ? "#ff7a28" : "#767575";
   return (
     <section>
-      <div className="container bg-white rounded-card p-4 theme-text-color">
+      <div className="container bg-white rounded-card p-4 theme-text-color mb-3">
         <h4 className="mb-5">Order : {order.orderCode}</h4>
         <div className="row form-btn-text">
           <div className="col-6 d-flex justify-content-left">
@@ -440,7 +450,7 @@ export const OrderDetails = () => {
           <div className="col-6 d-flex justify-content-left gap-5">
             {order.isCancellationRequested &&
               order.isCancellationApproved !== 1 &&
-              order.isCancellationApproved !== 2 && (
+              order.isCancellationApproved !== 2 && userRole ==='1' && (
                 <>
                   <button
                     type="submit"
@@ -461,37 +471,71 @@ export const OrderDetails = () => {
               )}
           </div>
         </div>
+        {/* order tracking */}
+        {status !== 3 && status !== 4 && (
+          <div className="d-flex justify-content-center mt-5 mb-5">
+            <div className="col-1">
+              <button style={getButtonStyles(0)} disabled>
+                <PendingStatus width={25} height={25} color={getIconColor(0)} />
+              </button>
+              <span
+                style={{
+                  color: getTextColor(0),
+                  marginTop: "5px",
+                  fontSize: "12px",
+                }}
+              >
+                Pending
+              </span>
+            </div>
 
-<div className="d-flex justify-content-center mt-5 mb-5">
-      <div className="col-1">
-        <button style={getButtonStyles(0)} disabled>
-          <PendingStatus width={25} height={25} color={getIconColor(0)} />
-        </button>
-        <span style={{ color: getTextColor(0), marginTop: "5px",fontSize:'12px' }}>Pending</span>
-      </div>
+            <div className="col-1">
+              <div style={getDashLineStyles(0)} />
+            </div>
 
-      <div className="col-1">
-      <div style={getDashLineStyles(0)} />
-      </div>
+            <div className="col-1">
+              <button style={getButtonStyles(1)} disabled>
+                <ProcessingStatus
+                  width={25}
+                  height={25}
+                  color={getIconColor(1)}
+                />
+              </button>
+              <span
+                style={{
+                  color: getTextColor(1),
+                  marginTop: "5px",
+                  fontSize: "12px",
+                }}
+              >
+                Processing
+              </span>
+            </div>
 
-      <div className="col-1">
-        <button style={getButtonStyles(1)} disabled>
-          <ProcessingStatus width={25} height={25} color={getIconColor(1)} />
-        </button>
-        <span style={{ color: getTextColor(1), marginTop: "5px",fontSize:'12px' }}>Processing</span>
-      </div>
+            <div className="col-1">
+              <div style={getDashLineStyles(1)} />
+            </div>
 
-      <div className="col-1">
-      <div style={getDashLineStyles(1)} />
-      </div>
-
-      <div className="col-1">
-        <button style={getButtonStyles(2)} disabled>
-          <DeliveredStatus width={25} height={25} color={getIconColor(2)} />
-        </button>
-        <span style={{ color: getTextColor(2), marginTop: "5px",fontSize:'12px' }}>Delivered</span>
-      </div>
-    </div>
+            <div className="col-1">
+              <button style={getButtonStyles(2)} disabled>
+                <DeliveredStatus
+                  width={25}
+                  height={25}
+                  color={getIconColor(2)}
+                />
+              </button>
+              <span
+                style={{
+                  color: getTextColor(2),
+                  marginTop: "5px",
+                  fontSize: "12px",
+                }}
+              >
+                Delivered
+              </span>
+            </div>
+          </div>
+        )}
         <div className="container mt-3">
           <DataTable
             columns={TABLE_ORDER_ITEM}
@@ -512,6 +556,19 @@ export const OrderDetails = () => {
             }
             conditionalRowStyles={conditionalRowStyles}
           />
+        </div>
+
+        <div className="container mt-3">
+        <div className="col-6 d-flex justify-content-left">
+            <div className="row">
+              <div className=" text-nowrap" style={{ width: "200px" }}>
+                Total Price :
+              </div>
+              <div className="text-nowrap" style={{ width: "auto" }}>
+               Rs . {order.totalPrice.toFixed(2)}{" "}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

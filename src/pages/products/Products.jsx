@@ -19,6 +19,7 @@ import { UpdateStock } from "./UpdateStock";
 import { AddProduct } from "./AddProduct";
 import { Link, useNavigate } from "react-router-dom";
 import { useStateContext } from "../../contexts/NavigationContext";
+import { EditProduct } from "./EditProduct";
 
 export const Products = () => {
 
@@ -28,7 +29,6 @@ export const Products = () => {
 
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  console.log(products)
   const [productTableLoading, setProductTableLoading] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState("");
   const handleLoading = () => setProductTableLoading((pre) => !pre);
@@ -86,7 +86,6 @@ export const Products = () => {
     });
   };
 
-  //product delete function
   const handleDelete = (product) => {
     Swal.fire({
       title: "Are you sure?",
@@ -110,16 +109,24 @@ export const Products = () => {
             });
           })
           .catch((error) => {
-            console.error("Error deleting Product:", error);
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong while deleting the Product.",
-            });
+            if (error.response && error.response.status === 409) {
+              Swal.fire({
+                icon: "error",
+                title: "Cannot Delete Product",
+                text: "Product cannot be deleted as there are pending orders.",
+              });
+            } else {
+              console.error("Error deleting Product:", error);
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong while deleting the Product.",
+              });
+            }
           });
       }
     });
-  };
+  };  
 
   //stock reset function
   const handleResetStock = (product) => {
@@ -158,6 +165,10 @@ export const Products = () => {
 
   //stock update function
   const handleUpdateStock = (product) => {
+    setSelectedProductId(product.id);
+  };
+
+  const handleEditProduct = (product) => {
     setSelectedProductId(product.id);
   };
   // Creating the table
@@ -303,14 +314,14 @@ export const Products = () => {
       cell: (row) => (
         <div>
           <button
-            className="edit-btn me-1"
-            // onClick={() => handleStatusChange(row)}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Edit Product"
-          >
-            <EditNewIcon />
-          </button>
+  className="edit-btn me-1"
+  onClick={() => handleEditProduct(row)}
+  data-bs-toggle="modal"
+  data-bs-target="#updateProductModel" 
+  title="Edit Product"
+>
+  <EditNewIcon />
+</button>
           <button
             className="edit-btn me-1"
             onClick={() => handleUpdateStock(row)}
@@ -346,33 +357,7 @@ export const Products = () => {
       <div className="container bg-white rounded-card p-4 theme-text-color">
         <div className="row">
           <div className="col-6">
-            <div className="d-flex align-items-center">
-              <div className="col-6">
-                <span style={{ fontSize: "15px", fontWeight: "600" }}>
-                  Search Product
-                </span>
-                <Select
-                  classNamePrefix="select"
-                  isSearchable={true}
-                  name="color"
-                  styles={customSelectStyles}
-                  className="col-9"
-                />
-              </div>
-
-              <div className="col-6">
-                <span style={{ fontSize: "15px", fontWeight: "600" }}>
-                  Search Product
-                </span>
-                <Select
-                  classNamePrefix="select"
-                  isSearchable={true}
-                  name="color"
-                  styles={customSelectStyles}
-                  className="col-9"
-                />
-              </div>
-            </div>
+           
           </div>
 
           <div className="col-6 d-flex justify-content-end gap-3">
@@ -429,6 +414,13 @@ export const Products = () => {
       <UpdateStock
         id="updateStockModel"
         title="Update Product Stock"
+        productId={selectedProductId}
+        handleLoading={handleLoading}
+      />
+
+<EditProduct
+        id="updateProductModel"
+        title="Update Product"
         productId={selectedProductId}
         handleLoading={handleLoading}
       />
